@@ -3673,13 +3673,13 @@ class Product extends JobImport
         /** @var string $mode */
         $mode = $this->configHelper->getFilterMode();
         if ($mode == Mode::STANDARD) {
-            /** bool|string[] $modelCompletenessFilter */
-            $modelCompletenessFilter = $this->getModelCompletenessFilter();
             /**
              * @var string $key
              * @var string[Ø] $filter
              */
             foreach ($filters as $key => $filter) {
+                /** bool|string[] $modelCompletenessFilter */
+                $modelCompletenessFilter = $this->getModelCompletenessFilter($filter['scope']);
                 if (isset($filter['search'])) {
                     if (isset($filter['search']['enabled'])) {
                         unset($filters[$key]['search']['enabled']);
@@ -3708,10 +3708,10 @@ class Product extends JobImport
      *
      * @return array|bool
      */
-    protected function getModelCompletenessFilter()
+    protected function getModelCompletenessFilter(string $productFilterScope = null)
     {
         /** @var string $scope */
-        $scope = $this->configHelper->getAdminDefaultChannel();
+        $scope = $productFilterScope ?? $this->configHelper->getAdminDefaultChannel();
         /** @var string $completenessType */
         $completenessType = $this->configHelper->getModelCompletenessTypeFilter();
         /** @var mixed $locales */
